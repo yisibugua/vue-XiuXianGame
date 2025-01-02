@@ -1824,11 +1824,17 @@ export default {
             },
           //获取角色当前装备
           getEquipmentInfo(id,type){
+            if (!id || !type) return;
+
             const equipment = this.getObjectById(id, this.player.inventory.concat(this.player.equipment[type]));
+            if (!equipment) return;
+
             // 需要炼器的装备信息
             this.strengthenInfo = equipment;
             // 炼器等级
-            this.player.equipment[type].strengthen = equipment.strengthen ? equipment.strengthen : 0;
+            if (this.player.equipment[type]) {
+              this.player.equipment[type].strengthen = equipment.strengthen ? equipment.strengthen : 0;
+            }
           },
             // 装备信息
             equipmentInfo (id,type) {
