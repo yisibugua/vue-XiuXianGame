@@ -76,33 +76,105 @@
                 <div class="tag equip-item">
                     <span class="equip">
                         <span>神兵: </span>
-                        <tag v-if="player.equipment.weapon?.name" :type="player.equipment.weapon?.quality" :closable="player.equipment.weapon?.name ? true : false" @close="equipmentClose('weapon')" @click="equipmentInfo('weapon')">
-                            {{ player.equipment.weapon?.name }}{{ player.equipment.weapon?.strengthen ? '+' + player.equipment.weapon?.strengthen : '' }}
-                        </tag>
-                        <span v-else>无</span>
+                        <el-popover
+                            placement="top-start"
+                            :title="player.equipment.weapon?.name"
+                            :width="300"
+                            trigger="hover"
+                            content="this is content, this is content, this is content"
+                        >
+                      <template #reference>
+                       <tag v-if="player.equipment.weapon?.name" :type="player.equipment.weapon?.quality"
+                            :closable="player.equipment.weapon?.name ? true : false" @close="equipmentClose('weapon')"
+                            @click="equipmentInfo(player.equipment[type].id,'weapon')" @mouseenter="getEquipmentInfo(player.equipment['weapon']?.id,'weapon')">
+                                              {{
+                           player.equipment.weapon?.name
+                         }}{{ player.equipment.weapon?.strengthen ? '+' + player.equipment.weapon?.strengthen : '' }}
+                                          </tag>
+                         <span v-else>无</span>
+                      </template>
+                          <template #default>
+                            <div>
+                            <equip-tooltip :player="player" :strengthen-info="strengthenInfo"></equip-tooltip>
+                            </div>
+                          </template>
+                    </el-popover>
                     </span>
                     <span class="equip">
                         <span>护甲: </span>
-                        <tag v-if="player.equipment.armor?.name" :type="player.equipment.armor?.quality" :closable="player.equipment.armor?.name ? true : false" @close="equipmentClose('armor')" @click="equipmentInfo('armor')">
-                            {{ player.equipment.armor?.name }}{{ player.equipment.armor?.strengthen ? '+' + player.equipment.armor?.strengthen : '' }}
+                                              <el-popover
+                                                  placement="top-start"
+                                                  :title="player.equipment.armor?.name"
+                                                  :width="300"
+                                                  trigger="hover"
+                                                  content="this is content, this is content, this is content"
+                                              >
+                      <template #reference>
+                       <tag v-if="player.equipment.armor?.name" :type="player.equipment.armor?.quality"
+                            :closable="player.equipment.armor?.name ? true : false" @close="equipmentClose('armor')"
+                            @click="equipmentInfo(player.equipment['armor']?.id,'armor')"
+                            @mouseenter="getEquipmentInfo(player.equipment['armor']?.id,'armor')">
+                            {{
+                           player.equipment.armor?.name
+                         }}{{ player.equipment.armor?.strengthen ? '+' + player.equipment.armor?.strengthen : '' }}
                         </tag>
                         <span v-else>无</span>
+                      </template>
+                          <template #default>
+                            <div>
+                            <equip-tooltip :player="player" :strengthen-info="strengthenInfo"></equip-tooltip>
+                            </div>
+                          </template>
+                    </el-popover>
+
                     </span>
                 </div>
                 <div class="tag equip-item">
                     <span class="equip">
                         <span>灵宝: </span>
-                        <tag v-if="player.equipment.accessory?.name" :type="player.equipment.accessory?.quality" :closable="!!player.equipment.accessory?.name" @close="equipmentClose('accessory')" @click="equipmentInfo('accessory')">
+                                                    <el-popover
+                                                        placement="top-start"
+                                                        :title="player.equipment.accessory?.name"
+                                                        :width="300"
+                                                        trigger="hover"
+                                                        content="this is content, this is content, this is content"
+                                                    >
+                      <template #reference>
+                       <tag v-if="player.equipment.accessory?.name" :type="player.equipment.accessory?.quality" :closable="!!player.equipment.accessory?.name" @close="equipmentClose('accessory')" @click="equipmentInfo(player.equipment['accessory']?.id,'accessory')" @mouseenter="getEquipmentInfo(player.equipment['accessory']?.id,'accessory')" >
                             {{ player.equipment.accessory?.name }}{{ player.equipment.accessory?.strengthen ? '+' + player.equipment.accessory?.strengthen : '' }}
                         </tag>
                         <span v-else>无</span>
+                      </template>
+                          <template #default>
+                            <div>
+                            <equip-tooltip :player="player" :strengthen-info="strengthenInfo"></equip-tooltip>
+                            </div>
+                          </template>
+                    </el-popover>
+
                     </span>
                     <span class="equip">
                         <span>法器: </span>
-                        <tag v-if="player.equipment.sutra?.name" :type="player.equipment.sutra?.quality" :closable="!!player.equipment.sutra?.name" @close="equipmentClose('sutra')" @click="equipmentInfo('sutra')">
+                                                    <el-popover
+                                                        placement="top-start"
+                                                        :title="player.equipment.sutra?.name"
+                                                        :width="300"
+                                                        trigger="hover"
+                                                        content="this is content, this is content, this is content"
+                                                    >
+                      <template #reference>
+                         <tag v-if="player.equipment.sutra?.name" :type="player.equipment.sutra?.quality" :closable="!!player.equipment.sutra?.name" @close="equipmentClose(player.equipment['sutra']?.id,'sutra')" @click="equipmentInfo(player.equipment['sutra']?.id,'sutra')" @mouseenter="getEquipmentInfo(player.equipment['sutra']?.id,'sutra')">
                             {{ player.equipment.sutra?.name }}{{ player.equipment.sutra?.strengthen ? '+' + player.equipment.sutra?.strengthen : '' }}
                         </tag>
                         <span v-else>无</span>
+                      </template>
+                          <template #default>
+                            <div>
+                            <equip-tooltip :player="player" :strengthen-info="strengthenInfo"></equip-tooltip>
+                            </div>
+                          </template>
+                    </el-popover>
+
                     </span>
                 </div>
                 <div class="tag equip-item">
@@ -143,16 +215,33 @@
                                 <el-tab-pane :label="i.name" :name="i.type" v-for="(i, k) in backPackItem" :key="k">
                                     <div class="inventory-content">
                                         <div v-if="player.inventory.length">
-                                            <template v-for="item in player.inventory">
-                                                <tag class="inventory-item" v-if="item.type == i.type" :key="item.id" :type="item.quality" :closable="!item.lock" @close="inventoryClose(item)" @click="inventory(item.id, item.type)">
+                                            <template v-for="item in player.inventory" :key="item.id">
+                                              <el-popover
+                                                  placement="bottom-start"
+                                                  :title="item.name"
+                                                  :width="300"
+                                                  trigger="hover"
+                                                  content="this is content, this is content, this is content"
+                                              >
+                                                <template #reference>
+                                                  <tag class="inventory-item" v-if="item.type == i.type" :key="item.id" :type="item.quality" :closable="!item.lock" @close="inventoryClose(item)" @click="inventory(item.id, item.type)" @mouseenter="getEquipmentInfo(item.id, item.type)">
                                                     <el-icon v-if="item.lock">
-                                                        <Lock />
+                                                      <Lock />
                                                     </el-icon>
                                                     <el-icon v-else>
-                                                        <Unlock />
+                                                      <Unlock />
                                                     </el-icon>
                                                     {{ item?.name }}{{ item?.strengthen ? '+' + item?.strengthen : '' }}
-                                                </tag>
+                                                  </tag>
+                                                </template>
+                                                <template #default>
+                                                  <div>
+                                                    <equip-tooltip
+                                                        :player="player" :strengthen-info="strengthenInfo"></equip-tooltip>
+                                                  </div>
+                                                </template>
+                                              </el-popover>
+
                                             </template>
                                         </div>
                                         <tag type="success" class="dialog-footer-button" v-if="!player.isNewbie" @click="newbiePack(4)">
@@ -330,34 +419,9 @@
         </el-drawer>
         <el-drawer title="炼器" v-model="strengthenShow" direction="rtl" class="strengthen">
             <div class="strengthen-box" v-if="strengthenShow">
-                <div class="attributes">
-                    <div class="attribute-box">
-                        <div class="tag attribute">
-                            气血: {{ $formatNumberToChineseUnit(strengthenInfo.health) }}
-                        </div>
-                        <div class="tag attribute">
-                            攻击: {{ $formatNumberToChineseUnit(strengthenInfo.attack) }}
-                        </div>
-                        <div class="tag attribute">
-                            防御: {{ $formatNumberToChineseUnit(strengthenInfo.defense) }}
-                        </div>
-                        <div class="tag attribute">
-                            炼器等级: {{ strengthenInfo.strengthen ?? 0 }}
-                        </div>
-                        <div class="tag attribute">
-                            装备评分: {{ $formatNumberToChineseUnit(strengthenInfo.score) }}
-                        </div>
-                        <div class="tag attribute" @click="$notifys({title: '获得方式', message: '分解装备可获取', position: 'top-left'})">
-                            拥有炼器石: {{ $formatNumberToChineseUnit(player.props.strengtheningStone) }}
-                        </div>
-                        <div class="tag attribute">
-                            炼器消耗: {{ calculateCost(strengthenInfo) }}
-                        </div>
-                        <div class="tag attribute">
-                            成功率: {{ (calculateEnhanceSuccessRate(strengthenInfo) * 100).toFixed(2) }}%
-                        </div>
-                    </div>
-                </div>
+              <equip-tooltip :calculate-cost="calculateCost(strengthenInfo)"
+                            :calculate-enhance-success-rate="calculateEnhanceSuccessRate(strengthenInfo)"
+                            :player="player" :strengthen-info="strengthenInfo"/>
                 <div class="click-box">
                     <el-checkbox v-model="protect" label="炼器保护" />
                     <el-checkbox v-model="increase" label="炼器增幅" />
@@ -759,22 +823,22 @@
 </template>
 
 <script>
-    // 标签组件
-    import tag from '@/components/tag.vue';
-    // 商店
-    import shop from '@/plugins/shop';
-    // 装备
-    import equip from '@/plugins/equip';
-    // 解密
-    import crypto from '@/plugins/crypto';
-    // 数据导出
-    import { saveAs } from 'file-saver';
-    // 图鉴
-    import equipAll from '@/plugins/equipAll';
-    // 成就
-    import achievement from '@/plugins/achievement';
+// 标签组件
+import tag from '@/components/tag.vue';
+// 商店
+import shop from '@/plugins/shop';
+// 装备
+import equip from '@/plugins/equip';
+// 解密
+// 数据导出
+import {saveAs} from 'file-saver';
+// 图鉴
+import equipAll from '@/plugins/equipAll';
+// 成就
+import achievement from '@/plugins/achievement';
+import equipTooltip from "@/components/tooltip/equipTooltip.vue";
 
-    export default {
+export default {
         data () {
             return {
                 ver: 0.9,
@@ -865,6 +929,7 @@
             }
         },
         components: {
+          equipTooltip,
             tag
         },
         computed: {
@@ -1377,7 +1442,7 @@
                 // 最终所需消耗道具数量
                 return (baseCost + incrementPerLevel) * protect * increase;
             },
-            // 计算炼器成功概率  
+            // 计算炼器成功概率
             calculateEnhanceSuccessRate (item) {
                 // 基础成功率
                 let baseSuccessRate = 1;
@@ -1627,7 +1692,7 @@
                 else return;
                 // 将装备添加到库存
                 if (JSON.stringify(equipItem) != '{}') this.newBieData.push(equipItem);
-                // 更新剩余次数  
+                // 更新剩余次数
                 timesLeft--;
                 // 设置延时以便下一次调用
                 setTimeout(() => {
@@ -1757,15 +1822,27 @@
                 // 清空身上当前类型的装备
                 equipment[type] = {};
             },
+          //获取角色当前装备
+          getEquipmentInfo(id,type){
+            if (!id || !type) return;
+
+            const equipment = this.getObjectById(id, this.player.inventory.concat(this.player.equipment[type]));
+            if (!equipment) return;
+
+            // 需要炼器的装备信息
+            this.strengthenInfo = equipment;
+            // 炼器等级
+            if (this.player.equipment[type]) {
+              this.player.equipment[type].strengthen = equipment.strengthen ? equipment.strengthen : 0;
+            }
+          },
             // 装备信息
-            equipmentInfo (type) {
-                const equipment = this.player.equipment[type];
+            equipmentInfo (id,type) {
+              if (id) {
                 // 打开炼器弹窗
                 this.strengthenShow = true;
-                // 需要炼器的装备信息
-                this.strengthenInfo = equipment;
-                // 炼器等级
-                this.player.equipment[type].strengthen = equipment.strengthen ? equipment.strengthen : 0;
+                this.getEquipmentInfo(id, type)
+              }
             },
             // 装备排序
             equipmentDropdown (command) {
@@ -1807,8 +1884,8 @@
                 return `${num3.toFixed(2)}%`
             },
             copyContent (type) {
-                /* 
-                    修改须知 
+                /*
+                    修改须知
                     可以修改群号但是必须留下地址
                 */
                 const content = type == 'qq' ? '920930589' : 'https://github.com/setube/vue-XiuXianGame';
