@@ -86,7 +86,7 @@
                       <template #reference>
                        <tag v-if="player.equipment.weapon?.name" :type="player.equipment.weapon?.quality"
                             :closable="player.equipment.weapon?.name ? true : false" @close="equipmentClose('weapon')"
-                            @click="equipmentInfo(player.equipment[type].id,'weapon')" @mouseenter="getEquipmentInfo(player.equipment['weapon']?.id,'weapon')">
+                            @click="equipmentInfo(player.equipment['weapon']?.id,'weapon')" @mouseenter="getEquipmentInfo(player.equipment['weapon']?.id,'weapon')">
                                               {{
                            player.equipment.weapon?.name
                          }}{{ player.equipment.weapon?.strengthen ? '+' + player.equipment.weapon?.strengthen : '' }}
