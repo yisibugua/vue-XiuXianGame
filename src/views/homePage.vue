@@ -2096,6 +2096,10 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        row-gap: 5px;
+    }
+    .dialog-footer .el-button {
+        margin-left: 0;
     }
 
     .dialog-upload {
